@@ -35,3 +35,6 @@ lerna-debug.log*
 
 #nasi fajlovi
 .env
+
+#nasi fajlovi 2
+.env2
