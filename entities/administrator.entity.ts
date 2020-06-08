@@ -10,4 +10,6 @@ export class Administrator {
 
     @Column({name: 'password_hash', type: 'varchar', length: '128'})
     passwordHash: string;
+
+    //created_at
 }
