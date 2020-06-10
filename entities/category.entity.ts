@@ -1,13 +1,30 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Product } from "./product.entity";
 
-@Entity()
+@Index("uq_category_cat_name", ["catName"], { unique: true })
+@Index("uq_category_image_path", ["imagePath"], { unique: true })
+@Entity("category")
 export class Category {
-    @PrimaryGeneratedColumn({ name: 'category_id', type: 'int', unsigned: true })
-    categoryId: number;
+  @PrimaryGeneratedColumn({ type: "int", name: "category_id", unsigned: true })
+  categoryId: number;
 
-    @Column({ name: 'cat_name', type: 'varchar', length: '128', unique: true})
-    catName: string;
+  @Column("varchar", {
+    name: "cat_name",
+    unique: true,
+    length: 128,
+    default: () => "'0'",
+  })
+  catName: string;
 
-    @Column({name: 'image_path', type: 'varchar', length: '128'})
-    imagePath: string;
+  @Column("varchar", { name: "image_path", unique: true, length: 128 })
+  imagePath: string;
+
+  @OneToMany(() => Product, (product) => product.category)
+  products: Product[];
 }

@@ -1,12 +1,35 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Product } from "./product.entity";
 
-@Entity()
+@Index("uq_image_image_path", ["imagePath"], { unique: true })
+@Index("fk_image_product_id", ["productId"], {})
+@Entity("image")
 export class Image {
-    @PrimaryGeneratedColumn({ name: 'image_id', type: 'int', unsigned: true })
-    imageId: number;
+  @PrimaryGeneratedColumn({ type: "int", name: "image_id", unsigned: true })
+  imageId: number;
 
-    @Column({ name: 'image_path', type: 'varchar', length: '128', unique: true})
-    imagePath: string;
+  @Column("varchar", {
+    name: "image_path",
+    unique: true,
+    length: 128,
+    default: () => "'0'",
+  })
+  imagePath: string;
 
-    //product_id
+  @Column("int", { name: "product_id", unsigned: true })
+  productId: number;
+
+  @ManyToOne(() => Product, (product) => product.images, {
+    onDelete: "NO ACTION",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn([{ name: "product_id", referencedColumnName: "productId" }])
+  product: Product;
 }

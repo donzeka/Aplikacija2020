@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Administrator } from 'entities/administrator.entity';
+import { Administrator } from 'entities/administrator';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 

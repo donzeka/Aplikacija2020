@@ -1,18 +1,61 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Product } from "./product.entity";
+import { User } from "./user.entity";
 
-@Entity()
+@Index("fk_auction_product_id", ["productId"], {})
+@Index("fk_auction_user_id", ["userId"], {})
+@Entity("auction")
 export class Auction {
-    @PrimaryGeneratedColumn({ name: 'auction_id', type: 'int', unsigned: true })
-    auctionId: number;
+  @PrimaryGeneratedColumn({ type: "int", name: "auction_id", unsigned: true })
+  auctionId: number;
 
-    @Column({ name: 'auction_name', type: 'varchar', length: '128', unique: true})
-    auctionName: string;
+  @Column("varchar", {
+    name: "auction_name",
+    length: 128,
+    default: () => "'0'",
+  })
+  auctionName: string;
 
-    @Column({type: 'enum', length: ''})
-    status: string;
+  @Column("int", { name: "user_id", unsigned: true, default: () => "'0'" })
+  userId: number;
 
-    @Column({type: 'datetime', length: ''})
-    duration: Date;
+  @Column("int", { name: "product_id", unsigned: true, default: () => "'0'" })
+  productId: number;
 
-    //user_id, product_id, created_at
+  @Column("enum", {
+    name: "status",
+    enum: ["active", "expired"],
+    default: () => "'active'",
+  })
+  status: "active" | "expired";
+
+  @Column("timestamp", {
+    name: "created_at",
+    default: () => "CURRENT_TIMESTAMP",
+  })
+  createdAt: Date;
+
+  @Column("datetime", { name: "duration" })
+  duration: Date;
+
+  @ManyToOne(() => Product, (product) => product.auctions, {
+    onDelete: "RESTRICT",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn([{ name: "product_id", referencedColumnName: "productId" }])
+  product: Product;
+
+  @ManyToOne(() => User, (user) => user.auctions, {
+    onDelete: "RESTRICT",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn([{ name: "user_id", referencedColumnName: "userId" }])
+  user: User;
 }
