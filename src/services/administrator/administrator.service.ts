@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Administrator } from 'entities/administrator';
+import { Administrator } from 'entities/administrator.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -17,4 +17,8 @@ export class AdministratorService {
     getById(id:number): Promise<Administrator>{
         return this.administrator.findOne(id);
     }
+
+    //add
+    //editById
+    //deleteById
 }

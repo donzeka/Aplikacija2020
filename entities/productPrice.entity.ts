@@ -21,7 +21,7 @@ export class ProductPrice {
   @Column("int", { name: "product_id", unsigned: true })
   productId: number;
 
-  @Column("decimal", { name: "price", unsigned: true, precision: 10, scale: 2 })
+  @Column("decimal", { unsigned: true, precision: 10, scale: 2 })
   price: string;
 
   @Column("timestamp", {

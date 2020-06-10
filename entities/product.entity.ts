@@ -27,7 +27,7 @@ export class Product {
   })
   productName: string;
 
-  @Column("text", { name: "description" })
+  @Column("text")
   description: string;
 
   @Column("int", { name: "category_id", unsigned: true })

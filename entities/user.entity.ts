@@ -15,7 +15,6 @@ export class User {
   userId: number;
 
   @Column("varchar", {
-    name: "username",
     unique: true,
     length: 50,
     default: () => "'0'",
@@ -29,16 +28,16 @@ export class User {
   })
   passwordHash: string;
 
-  @Column("varchar", { name: "name", length: 50, default: () => "'0'" })
+  @Column("varchar", { length: 50, default: () => "'0'" })
   name: string;
 
-  @Column("varchar", { name: "surname", length: 50, default: () => "'0'" })
+  @Column("varchar", { length: 50, default: () => "'0'" })
   surname: string;
 
-  @Column("varchar", { name: "number", length: 50, default: () => "'0'" })
+  @Column("varchar", { length: 50, default: () => "'0'" })
   number: string;
 
-  @Column("varchar", { name: "address", length: 50, default: () => "'0'" })
+  @Column("varchar", { length: 50, default: () => "'0'" })
   address: string;
 
   @Column("timestamp", {

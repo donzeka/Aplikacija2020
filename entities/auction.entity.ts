@@ -23,8 +23,8 @@ export class Auction {
   })
   auctionName: string;
 
-  @Column("int", { name: "user_id", unsigned: true, default: () => "'0'" })
-  userId: number;
+  @Column("int", { name: "user_id", nullable: true, unsigned: true, default: () => "'0'" })
+  userId: number | null;
 
   @Column("int", { name: "product_id", unsigned: true, default: () => "'0'" })
   productId: number;
@@ -42,7 +42,7 @@ export class Auction {
   })
   createdAt: Date;
 
-  @Column("datetime", { name: "duration" })
+  @Column("datetime")
   duration: Date;
 
   @ManyToOne(() => Product, (product) => product.auctions, {
