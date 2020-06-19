@@ -4,7 +4,7 @@ import { Administrator } from "entities/administrator.entity";
 import { AddAdministratorDto } from "src/dtos/administrator/add.administrator.dto";
 import { EditAdministratorDto } from "src/dtos/administrator/edit.administrator.dto";
 
-@Controller('api/administrator')
+@Controller('api/administrator/')
 export class AdministratorController {
     constructor(
         private administratorService: AdministratorService
@@ -26,7 +26,7 @@ export class AdministratorController {
     }
 
     @Post(':id')
-    edit(@Param('id') id: number, @Body() data: EditAdministratorDto): Promise<Administrator>{
+    editById(@Param('id') id: number, @Body() data: EditAdministratorDto): Promise<Administrator>{
         return this.administratorService.editById(id, data);
     }
 

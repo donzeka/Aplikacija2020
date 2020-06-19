@@ -27,7 +27,7 @@ export class Image {
   productId: number;
 
   @ManyToOne(() => Product, (product) => product.images, {
-    onDelete: "NO ACTION",
+    onDelete: "RESTRICT",
     onUpdate: "CASCADE",
   })
   @JoinColumn([{ name: "product_id", referencedColumnName: "productId" }])
