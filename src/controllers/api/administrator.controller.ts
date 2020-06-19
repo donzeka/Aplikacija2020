@@ -3,6 +3,7 @@ import { AdministratorService } from "src/services/administrator/administrator.s
 import { Administrator } from "entities/administrator.entity";
 import { AddAdministratorDto } from "src/dtos/administrator/add.administrator.dto";
 import { EditAdministratorDto } from "src/dtos/administrator/edit.administrator.dto";
+import { ApiResponse } from "src/misc/api.response.class";
 
 @Controller('api/administrator/')
 export class AdministratorController {
@@ -21,7 +22,7 @@ export class AdministratorController {
     }
 
     @Put()
-    add(@Body() data: AddAdministratorDto): Promise<Administrator>{
+    add(@Body() data: AddAdministratorDto): Promise<Administrator | ApiResponse>{
         return this.administratorService.add(data);
     }
 
