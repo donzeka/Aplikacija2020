@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
-import {TypeOrmModule} from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfig } from 'config/database.config';
 import { Administrator } from 'entities/administrator.entity';
 import { AdministratorService } from './services/administrator/administrator.service';
@@ -29,50 +29,50 @@ import { UserControler } from './controllers/api/user.controller';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: DatabaseConfig.hostname,
       port: 3306,
+      host: DatabaseConfig.hostname,
       username: DatabaseConfig.username,
       password: DatabaseConfig.password,
       database: DatabaseConfig.database,
       entities: [ 
         Administrator,
+        User,
         Auction,
         Category,
-        Image,
         Product,
         ProductPrice,
-        User
+        Image
       ]
     }),
     TypeOrmModule.forFeature([
-      Administrator,
-      Category,
-      Product,
-      User,
-      Image,
-      Auction,
-      ProductPrice
+        Administrator,
+        User,
+        Auction,
+        Category,
+        Product,
+        ProductPrice,
+        Image
     ])
   ],
   controllers: [
     AppController,
+
     AdministratorController,
+    UserControler,
+    AuctionControler,
     CategoryControler,
     ProductControler,
-    AuctionControler,
-    ImageControler,
     ProductPriceControler,
-    UserControler
-
+    ImageControler
   ],
   providers: [
     AdministratorService,
+    UserService,
+    AuctionService,
     CategoryService,
     ProductService,
-    AuctionService,
-    ImageService,
     ProductPriceService,
-    UserService
+    ImageService
   ],
 })
 export class AppModule {}

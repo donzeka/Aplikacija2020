@@ -4,7 +4,6 @@ import { Administrator } from "entities/administrator.entity";
 import { AddAdministratorDto } from "src/dtos/administrator/add.administrator.dto";
 import { EditAdministratorDto } from "src/dtos/administrator/edit.administrator.dto";
 import { ApiResponse } from "src/misc/api.response.class";
-//import { resolve } from "path";
 
 @Controller('api/administrator/')
 export class AdministratorController {
