@@ -17,7 +17,12 @@ import { AuctionService } from "src/services/auction/auction.service";
     },
     query: {
         join: {
-            
+            product: {
+                eager: true
+            },
+            user: {
+                eager: true
+            }
         }
     }
 })

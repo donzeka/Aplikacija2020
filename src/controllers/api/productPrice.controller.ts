@@ -17,7 +17,9 @@ import { ProductPriceService } from "src/services/productPrice/productPrice.serv
     },
     query: {
         join: {
-            
+            product: {
+                eager: true
+            }
         }
     }
 })

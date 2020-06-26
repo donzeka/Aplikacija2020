@@ -16,7 +16,9 @@ import { ImageService } from "src/services/image/image.service";
     },
     query: {
         join: {
-            
+            product: {
+                eager: true
+            }
         }
     }
 })

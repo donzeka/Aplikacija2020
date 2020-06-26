@@ -17,7 +17,12 @@ import { UserService } from "src/services/user/user.service";
     },
     query: {
         join: {
-            
+            auctions: {
+                eager: true
+            },
+            products: {
+                eager: true
+            }
         }
     }
 })
