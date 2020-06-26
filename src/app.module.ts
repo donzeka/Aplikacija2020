@@ -11,6 +11,18 @@ import { ProductPrice } from 'entities/productPrice.entity';
 import { User } from 'entities/user.entity';
 import { Image } from 'entities/image.entity';
 import { AdministratorController } from './controllers/api/administrator.controller';
+import { CategoryControler } from './controllers/api/category.controller';
+import { CategoryService } from './services/category/category.service';
+import { ProductService } from './services/product/product.service';
+import { ProductControler } from './controllers/api/product.controller';
+import { AuctionService } from './services/auction/auction.service';
+import { ImageService } from './services/image/image.service';
+import { ProductPriceService } from './services/productPrice/productPrice.service';
+import { UserService } from './services/user/user.service';
+import { AuctionControler } from './controllers/api/auction.controller';
+import { ImageControler } from './controllers/api/image.controller';
+import { ProductPriceControler } from './controllers/api/productPrice.controller';
+import { UserControler } from './controllers/api/user.controller';
 
 
 @Module({
@@ -32,12 +44,35 @@ import { AdministratorController } from './controllers/api/administrator.control
         User
       ]
     }),
-    TypeOrmModule.forFeature([Administrator])
+    TypeOrmModule.forFeature([
+      Administrator,
+      Category,
+      Product,
+      User,
+      Image,
+      Auction,
+      ProductPrice
+    ])
   ],
   controllers: [
     AppController,
-    AdministratorController
+    AdministratorController,
+    CategoryControler,
+    ProductControler,
+    AuctionControler,
+    ImageControler,
+    ProductPriceControler,
+    UserControler
+
   ],
-  providers: [AdministratorService],
+  providers: [
+    AdministratorService,
+    CategoryService,
+    ProductService,
+    AuctionService,
+    ImageService,
+    ProductPriceService,
+    UserService
+  ],
 })
 export class AppModule {}
