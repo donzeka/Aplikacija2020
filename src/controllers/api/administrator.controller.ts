@@ -4,6 +4,7 @@ import { Administrator } from "entities/administrator.entity";
 import { AddAdministratorDto } from "src/dtos/administrator/add.administrator.dto";
 import { EditAdministratorDto } from "src/dtos/administrator/edit.administrator.dto";
 import { ApiResponse } from "src/misc/api.response.class";
+//import { resolve } from "path";
 
 @Controller('api/administrator/')
 export class AdministratorController {
@@ -17,8 +18,17 @@ export class AdministratorController {
     }
 
     @Get(':id')
-    getById( @Param('id') administratorId: number): Promise<Administrator>{
-        return this.administratorService.getById(administratorId);
+    getById( @Param('id') administratorId: number): Promise<Administrator | ApiResponse>{
+        return new Promise(async (resolve) => {
+            
+            const admin = await this.administratorService.getById(administratorId);
+
+            if(admin === undefined){
+                resolve(new ApiResponse("error", -1002));
+            }
+
+            resolve(admin);
+        });
     }
 
     @Put()
@@ -27,7 +37,7 @@ export class AdministratorController {
     }
 
     @Post(':id')
-    editById(@Param('id') id: number, @Body() data: EditAdministratorDto): Promise<Administrator>{
+    editById(@Param('id') id: number, @Body() data: EditAdministratorDto): Promise<Administrator | ApiResponse>{
         return this.administratorService.editById(id, data);
     }
 

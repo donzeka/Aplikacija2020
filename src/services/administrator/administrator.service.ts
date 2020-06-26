@@ -18,7 +18,7 @@ export class AdministratorService {
         return this.administrator.find();
     }
 
-    getById(id:number): Promise<Administrator>{
+    getById(id:number): Promise<Administrator | ApiResponse>{
         return this.administrator.findOne(id);
     }
 
@@ -43,8 +43,14 @@ export class AdministratorService {
         })
     }
 
-    async editById(id: number, data: EditAdministratorDto): Promise<Administrator>{
+    async editById(id: number, data: EditAdministratorDto): Promise<Administrator | ApiResponse>{
         const admin: Administrator = await this.administrator.findOne(id);
+
+        if (admin === undefined){
+            return new Promise((resolve) => {
+                resolve(new ApiResponse("error", -1002));
+            })
+        }
         
         const passwordHash = crypto.createHash('sha512');
         passwordHash.update(data.password);
