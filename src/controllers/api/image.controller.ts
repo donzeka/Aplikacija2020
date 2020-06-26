@@ -1,6 +1,7 @@
 import { Controller } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
 import { ImageService } from "src/services/image/image.service";
+import { Image } from "entities/image.entity";
 
 @Controller('api/image')
 @Crud({
