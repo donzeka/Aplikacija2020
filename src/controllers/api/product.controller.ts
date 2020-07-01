@@ -1,7 +1,9 @@
-import { Controller } from "@nestjs/common";
+import { Controller, Post, Body } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
 import { ProductService } from "src/services/product/product.service";
 import { Product } from "entities/product.entity";
+import { AddProductDto } from "src/dtos/product/add.product.dto";
+import { ApiResponse } from "src/misc/api.response.class";
 
 @Controller('api/product')
 @Crud({
@@ -37,4 +39,9 @@ import { Product } from "entities/product.entity";
 })
 export class ProductControler {
     constructor(public service: ProductService) {}
+
+    @Post('createFull')
+    createFullProduct(@Body() data: AddProductDto): Promise<Product | ApiResponse>{
+        return this.service.createFullProduct(data);
+    }
 }
