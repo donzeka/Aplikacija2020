@@ -6,6 +6,7 @@ import { Product } from "entities/product.entity";
 import { AddProductDto } from "src/dtos/product/add.product.dto";
 import { ApiResponse } from "src/misc/api.response.class";
 import { Image } from "entities/image.entity";
+// import { ProductPrice } from "entities/productPrice.entity";
 
 
 @Injectable()
@@ -15,7 +16,10 @@ export class ProductService extends TypeOrmCrudService<Product> {
         private readonly product: Repository<Product>,
 
         @InjectRepository(Image)
-        private readonly image: Repository<Image>
+        private readonly image: Repository<Image>,
+
+        // @InjectRepository(ProductPrice)        //proveriti posto se cena vezuje za aukciju, ne za proizvod
+        // private readonly productPrice: Repository<ProductPrice>
     ) {
         super(product);
     }

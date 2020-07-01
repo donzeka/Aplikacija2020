@@ -83,7 +83,7 @@ import { AuthMiddleware } from './middlewares/auth.Middleware';
 })
 
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(AuthMiddleware)
       .exclude('auth/*')

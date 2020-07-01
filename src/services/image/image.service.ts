@@ -9,6 +9,10 @@ import { Image } from "entities/image.entity";
 export class ImageService extends TypeOrmCrudService<Image> {
     constructor( @InjectRepository(Image) private readonly image: Repository<Image>) {
         super(image);
+    }
+    
+    add(newImage: Image): Promise<Image>{
+        return this.image.save(newImage);
     }   
 }
 
