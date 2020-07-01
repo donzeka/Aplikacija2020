@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { Controller, Post, Body, Param, UseInterceptors, UploadedFile, Req } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
 import { ProductService } from "src/services/product/product.service";
 import { Product } from "entities/product.entity";
@@ -83,12 +83,14 @@ export class ProductControler {
             fileFilter: (req, file, callback) => {
                 // 1. Check ekstenzije: JPG, PNG
                 if (!file.originalname.toLocaleLowerCase().match(/\.(jpg|png)$/)){
-                    callback(new Error('Bad file extension!'), false);
+                    req.fileFilterError = 'Bad file extension!';
+                    callback(null, false);
                     return;
                 }
                 // 2. Check tipa sadrzaja: image/jpeg, image/png (mimetype)
                 if (!(file.mimetype.includes('jpeg') || file.mimetype.includes('png'))){
-                    callback(new Error('Bad file content!'), false);
+                    req.fileFilterError = 'Bad file content!';
+                    callback(null, false);
                     return;
                 }
 
@@ -96,12 +98,27 @@ export class ProductControler {
             },
             limits: {
                 files: 1,
-                fieldSize: StorageConfig.photoMaxFileSize,
+                fileSize: StorageConfig.photoMaxFileSize,
             }
         })
     )
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    async uploadPhoto(@Param('id') articleId: number, @UploadedFile() photo): Promise<ApiResponse | Image> {
+    
+    async uploadPhoto(
+        @Param('id') articleId: number, 
+        @UploadedFile() photo,
+        @Req() req
+    ): Promise<ApiResponse | Image> {
+        if (req.fileFilterError) {
+            return new ApiResponse('error', -4002, req.fileFilterError);
+        }
+
+        if (!photo) {
+            return new ApiResponse('error', -4002, 'File not uploaded!');
+        }
+
+        // TODO: Real mime type check
+        // TODO: save a resized file
+
         const newImage: Image = new Image();
         newImage.productId = articleId;
         newImage.imagePath = photo.filename;
