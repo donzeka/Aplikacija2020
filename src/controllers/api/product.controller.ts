@@ -9,7 +9,6 @@ import { StorageConfig } from "config/storage.config";
 import { diskStorage } from "multer";
 import { ImageService } from "src/services/image/image.service";
 import { Image } from "entities/image.entity";
-import { normalize } from "path";
 
 @Controller('api/product')
 @Crud({
@@ -73,7 +72,7 @@ export class ProductControler {
                     const randomPart: string =
                         new Array(10)
                             .fill(0)
-                            .map(e => (Math.random() * 9).toFixed(0).toString())
+                            .map(() => (Math.random() * 9).toFixed(0).toString())
                             .join('');
 
                     let fileName = datePart + '-' + randomPart + '-' + normalized;
@@ -101,6 +100,7 @@ export class ProductControler {
             }
         })
     )
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     async uploadPhoto(@Param('id') articleId: number, @UploadedFile() photo): Promise<ApiResponse | Image> {
         const newImage: Image = new Image();
         newImage.productId = articleId;
