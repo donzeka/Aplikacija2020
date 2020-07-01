@@ -9,6 +9,9 @@ import { StorageConfig } from "config/storage.config";
 import { diskStorage } from "multer";
 import { ImageService } from "src/services/image/image.service";
 import { Image } from "entities/image.entity";
+import * as fileType from 'file-type';
+import * as fs from 'fs';
+import * as sharp from 'sharp';
 
 @Controller('api/product')
 @Crud({
@@ -105,7 +108,9 @@ export class ProductControler {
     
     async uploadPhoto(
         @Param('id') articleId: number, 
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
         @UploadedFile() photo,
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
         @Req() req
     ): Promise<ApiResponse | Image> {
         if (req.fileFilterError) {
@@ -115,9 +120,22 @@ export class ProductControler {
         if (!photo) {
             return new ApiResponse('error', -4002, 'File not uploaded!');
         }
+        
+        const fileTypeResult = await fileType.fromFile(photo.path);
+        if (!fileTypeResult){
+            fs.unlinkSync(photo.path);
+            return new ApiResponse('error', -4002, 'Cannot detect file type!');
+        }
+        
+        const realMimeType = fileTypeResult.mime;
+        if (!(realMimeType.includes('jpeg') || realMimeType.includes('png'))){
+            fs.unlinkSync(photo.path);
+            return new ApiResponse('error', -4002, 'Bad file content type!');
+        }
 
-        // TODO: Real mime type check
         // TODO: save a resized file
+        await this.createThumb(photo);
+        await this.createSmallImage(photo);
 
         const newImage: Image = new Image();
         newImage.productId = articleId;
@@ -129,5 +147,44 @@ export class ProductControler {
         }
 
         return savedImage;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    async createThumb(photo){
+        const originalFilePath = photo.path;
+        const fileName = photo.filename;
+
+        const destinationFilePath = StorageConfig.photoDestination + "thumb/" + fileName;
+
+        await sharp(originalFilePath)
+            .resize({
+                fit: 'cover',
+                width: StorageConfig.photoThumbSize.width,
+                height: StorageConfig.photoThumbSize.height,
+                background: {
+                    r: 255, g: 255, b: 255, alpha: 0.0
+                }
+            })
+            .toFile(destinationFilePath);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    async createSmallImage(photo){
+        const originalFilePath = photo.path;
+        const fileName = photo.filename;
+
+        const destinationFilePath = StorageConfig.photoDestination + "small/" + fileName;
+
+        await sharp(originalFilePath)
+            .resize({
+                fit: 'cover',
+                width: StorageConfig.photoSmallSize.width,
+                height: StorageConfig.photoSmallSize.height,
+                background: {
+                    r: 255, g: 255, b: 255, alpha: 0.0
+                }
+            })
+            .toFile(destinationFilePath);
+
     }
 }
