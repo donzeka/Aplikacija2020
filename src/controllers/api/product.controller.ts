@@ -1,14 +1,14 @@
 import { Controller, Post, Body, Param, UseInterceptors, UploadedFile, Req } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
 import { ProductService } from "src/services/product/product.service";
-import { Product } from "entities/product.entity";
+import { Product } from "src/entities/product.entity";
 import { AddProductDto } from "src/dtos/product/add.product.dto";
 import { ApiResponse } from "src/misc/api.response.class";
 import { FileInterceptor } from '@nestjs/platform-express';
 import { StorageConfig } from "config/storage.config";
 import { diskStorage } from "multer";
 import { ImageService } from "src/services/image/image.service";
-import { Image } from "entities/image.entity";
+import { Image } from "src/entities/image.entity";
 import * as fileType from 'file-type';
 import * as fs from 'fs';
 import * as sharp from 'sharp';
@@ -60,7 +60,7 @@ export class ProductControler {
     @UseInterceptors(
         FileInterceptor('photo', {
             storage: diskStorage({
-                destination: StorageConfig.photoDestination,
+                destination: StorageConfig.photo.destination,
                 filename: (req, file, callback) => {
                     const original: string = file.originalname;
 
@@ -101,7 +101,7 @@ export class ProductControler {
             },
             limits: {
                 files: 1,
-                fileSize: StorageConfig.photoMaxFileSize,
+                fileSize: StorageConfig.photo.maxSize,
             }
         })
     )
@@ -133,9 +133,8 @@ export class ProductControler {
             return new ApiResponse('error', -4002, 'Bad file content type!');
         }
 
-        // TODO: save a resized file
-        await this.createThumb(photo);
-        await this.createSmallImage(photo);
+        await this.createResizedImage(photo, StorageConfig.photo.resize.thumb);
+        await this.createResizedImage(photo, StorageConfig.photo.resize.small);
 
         const newImage: Image = new Image();
         newImage.productId = articleId;
@@ -148,43 +147,21 @@ export class ProductControler {
 
         return savedImage;
     }
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+        async createResizedImage(photo, resizeSettings) {
+            const originalFilePath = photo.path;
+            const fileName = photo.filename;
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    async createThumb(photo){
-        const originalFilePath = photo.path;
-        const fileName = photo.filename;
+            const destinationFilePath = StorageConfig.photo.destination
+                                    + resizeSettings.directory
+                                    + fileName;
 
-        const destinationFilePath = StorageConfig.photoDestination + "thumb/" + fileName;
-
-        await sharp(originalFilePath)
-            .resize({
-                fit: 'cover',
-                width: StorageConfig.photoThumbSize.width,
-                height: StorageConfig.photoThumbSize.height,
-                background: {
-                    r: 255, g: 255, b: 255, alpha: 0.0
-                }
-            })
-            .toFile(destinationFilePath);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    async createSmallImage(photo){
-        const originalFilePath = photo.path;
-        const fileName = photo.filename;
-
-        const destinationFilePath = StorageConfig.photoDestination + "small/" + fileName;
-
-        await sharp(originalFilePath)
-            .resize({
-                fit: 'cover',
-                width: StorageConfig.photoSmallSize.width,
-                height: StorageConfig.photoSmallSize.height,
-                background: {
-                    r: 255, g: 255, b: 255, alpha: 0.0
-                }
-            })
-            .toFile(destinationFilePath);
-
-    }
+            await sharp(originalFilePath)
+                .resize({
+                    fit: 'cover',
+                    width: resizeSettings.width,
+                    height: resizeSettings.height,
+                })
+                .toFile(destinationFilePath);
+        }   
 }

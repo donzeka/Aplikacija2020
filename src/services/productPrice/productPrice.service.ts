@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { ProductPrice } from "entities/productPrice.entity";
+import { ProductPrice } from "src/entities/productPrice.entity";
 
 
 @Injectable()

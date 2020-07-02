@@ -1,6 +1,6 @@
 import { Controller } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
-import { Auction } from "entities/auction.entity";
+import { Auction } from "src/entities/auction.entity";
 import { AuctionService } from "src/services/auction/auction.service";
 
 @Controller('api/auction')
