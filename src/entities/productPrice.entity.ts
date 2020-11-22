@@ -22,7 +22,7 @@ export class ProductPrice {
   productId: number;
 
   @Column("decimal", { unsigned: true, precision: 10, scale: 2 })
-  price: string;
+  price: number;
 
   @Column("timestamp", {
     name: "created_at",

@@ -1,7 +1,9 @@
 export class AddProductDto{
     productName: string;
     categoryId: number;
+    userId: number;
     description: string;
+    price: number;
     /*
     "images": [
         "base64slika1...",
