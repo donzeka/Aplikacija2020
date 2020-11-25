@@ -64,6 +64,7 @@ export class AuthController{
 
 
 
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
         @Put('user/register')
         async userRegister(@Body() data: UserRegistrationDto) {
             return await this.userService.register(data);

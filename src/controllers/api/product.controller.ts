@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, UseInterceptors, UploadedFile, Req, Delete, Patch } from "@nestjs/common";
+import { Controller, Post, Body, Param, UseInterceptors, UploadedFile, Req, Delete, Patch, UseGuards } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
 import { ProductService } from "src/services/product/product.service";
 import { Product } from "src/entities/product.entity";
@@ -13,6 +13,8 @@ import * as fileType from 'file-type';
 import * as fs from 'fs';
 import * as sharp from 'sharp';
 import { EditProductDto } from "src/dtos/product/edit.product.dto";
+import { RoleCheckerGuard } from "src/misc/role.checker.guard";
+import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
 
 @Controller('api/product')
 @Crud({
@@ -54,17 +56,22 @@ export class ProductControler {
         public service: ProductService,
         public imageService: ImageService,
         ) {}
-
+    @UseGuards(RoleCheckerGuard)
+    @AllowToRoles('administrator')
     @Post('createFull')
     createFullProduct(@Body() data: AddProductDto): Promise<Product | ApiResponse>{
         return this.service.createFullProduct(data);
     }
 
+    @UseGuards(RoleCheckerGuard)
+    @AllowToRoles('administrator')
     @Patch(':id')
     editFullProduct(@Param('id') id: number, @Body() data: EditProductDto){
         return this.service.editFullProduct(id, data);
     }
 
+    @UseGuards(RoleCheckerGuard)
+    @AllowToRoles('administrator')
     @Post(':id/uploadPhoto/')
     @UseInterceptors(
         FileInterceptor('photo', {
@@ -174,6 +181,8 @@ export class ProductControler {
                 .toFile(destinationFilePath);
         } 
         
+        @UseGuards(RoleCheckerGuard)
+        @AllowToRoles('administrator')
         @Delete(':productId/deletePhoto/:photoId')
         public async deletePhoto(
             @Param('productId') productId: number,
