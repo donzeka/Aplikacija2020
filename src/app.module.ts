@@ -78,7 +78,8 @@ import { AuthMiddleware } from './middlewares/auth.Middleware';
     ImageService
   ],
   exports: [
-    AdministratorService
+    AdministratorService,
+    UserService
   ],
 })
 

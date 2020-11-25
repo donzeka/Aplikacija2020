@@ -1,5 +1,6 @@
-export class JwtDataAdministratorDto{
-    administratorId: number;
+export class JwtDataDto{
+    role: "administrator" | "user";
+    id: number;
     username: string;
     exp: number; //unix timestamp
     ip: string;
@@ -8,7 +9,8 @@ export class JwtDataAdministratorDto{
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     toPlainObject(){
         return {
-            administratorId: this.administratorId,
+            role: this.role,
+            id: this.id,
             username: this.username,
             exp: this.exp,
             ip: this.ip,
