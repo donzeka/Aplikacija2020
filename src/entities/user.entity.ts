@@ -14,6 +14,14 @@ export class User {
   @PrimaryGeneratedColumn({ type: "int", name: "user_id", unsigned: true })
   userId: number;
 
+  @Column({
+    type: 'varchar',
+    unique: true,
+    length: 50,
+    default: () => "'0'",
+  })
+  email: string;
+
   @Column("varchar", {
     unique: true,
     length: 50,
@@ -36,9 +44,6 @@ export class User {
 
   @Column("varchar", { length: 50, default: () => "'0'" })
   number: string;
-
-  @Column("varchar", { length: 50, default: () => "'0'" })
-  address: string;
 
   @Column("timestamp", {
     name: "created_at",
