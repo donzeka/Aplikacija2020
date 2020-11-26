@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Put } from "@nestjs/common";
+import { Controller, Post, Body, Req } from "@nestjs/common";
 import { AdministratorService } from "src/services/administrator/administrator.service";
 import { UserService } from "src/services/user/user.service";
 import { LoginAdministratorDto } from "src/dtos/administrator/login.administrator.dto";
@@ -59,21 +59,11 @@ export class AuthController{
     }
 
 
-
-
-
-
-
         // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-        @Put('user/register')
+        @Post('user/register')
         async userRegister(@Body() data: UserRegistrationDto) {
             return await this.userService.register(data);
         }
-
-
-
-
-
 
 
         @Post('user/login') //http://localhost:3000/auth/login

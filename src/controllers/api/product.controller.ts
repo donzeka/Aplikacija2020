@@ -48,7 +48,23 @@ import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
         }
     },
     routes: {
-        exclude: ['updateOneBase', 'replaceOneBase', "deleteOneBase"]               //proveriti
+        only: [
+            'getOneBase',
+            'getManyBase',
+        ],
+        getOneBase: {
+            decorators: [
+                UseGuards(RoleCheckerGuard),
+                AllowToRoles('administrator', 'user')
+            ],
+        },
+        getManyBase: {
+            decorators: [
+                UseGuards(RoleCheckerGuard),
+                AllowToRoles('administrator', 'user')
+            ],
+        }
+                      
     }
 })
 export class ProductControler {
@@ -58,7 +74,7 @@ export class ProductControler {
         ) {}
     @UseGuards(RoleCheckerGuard)
     @AllowToRoles('administrator')
-    @Post('createFull')
+    @Post()
     createFullProduct(@Body() data: AddProductDto): Promise<Product | ApiResponse>{
         return this.service.createFullProduct(data);
     }
