@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { Product } from "./product.entity";
 import { User } from "./user.entity";
+import * as Validator from 'class-validator'
 
 @Index("fk_auction_product_id", ["productId"], {})
 @Index("fk_auction_user_id", ["userId"], {})
@@ -34,6 +35,8 @@ export class Auction {
     enum: ["active", "expired"],
     default: () => "'active'",
   })
+  @Validator.IsNotEmpty()
+  @Validator.IsIn(["active", "expired"])
   status: "active" | "expired";
 
   @Column("timestamp", {

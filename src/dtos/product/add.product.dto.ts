@@ -1,16 +1,26 @@
-export class AddProductDto{
-    productName: string;
-    categoryId: number;
-    userId: number;
-    description: string;
-    price: number;
-    /*
-    "images": [
-        "base64slika1...",
-        "base64slika2...",
-        "base64slika3..."
-    ]
-    */
-}
+import * as Validator from 'class-validator';
 
-//proveriti nacin dodavanja i cuvanja slika
+export class AddProductDto{
+    @Validator.IsNotEmpty()
+    @Validator.IsString()
+    @Validator.Length(5,128)
+    productName: string;
+
+    categoryId: number;
+
+    userId: number;
+
+    @Validator.IsNotEmpty()
+    @Validator.IsString()
+    @Validator.Length(10,10000)
+    description: string;
+
+    @Validator.IsNotEmpty()
+    @Validator.IsPositive()
+    @Validator.IsNumber({
+    allowInfinity: false,
+    allowNaN: false,
+    maxDecimalPlaces: 2,
+    })
+    price: number;
+}   

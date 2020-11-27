@@ -12,6 +12,7 @@ import { Image } from "./image.entity";
 import { Category } from "./category.entity";
 import { ProductPrice } from "./productPrice.entity";
 import { User } from "./user.entity";
+import * as Validator from 'class-validator';
 
 @Index("fk_product_category_id", ["categoryId"], {})
 @Index("fk_product_user_id", ["userId"], {})
@@ -25,9 +26,15 @@ export class Product {
     length: 128,
     default: () => "'0'",
   })
+  @Validator.IsNotEmpty()
+  @Validator.IsString()
+  @Validator.Length(5,128)
   productName: string;
 
   @Column("text")
+  @Validator.IsNotEmpty()
+  @Validator.IsString()
+  @Validator.Length(20, 10000)
   description: string;
 
   @Column("int", { name: "category_id", unsigned: true })

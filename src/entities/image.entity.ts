@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Product } from "./product.entity";
+import * as Validator from 'class-validator';
 
 @Index("uq_image_image_path", ["imagePath"], { unique: true })
 @Index("fk_image_product_id", ["productId"], {})
@@ -21,6 +22,9 @@ export class Image {
     length: 128,
     default: () => "'0'",
   })
+  @Validator.IsNotEmpty()
+  @Validator.IsString()
+  @Validator.Length(5,255)
   imagePath: string;
 
   @Column("int", { name: "product_id", unsigned: true })
