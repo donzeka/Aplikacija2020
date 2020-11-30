@@ -25,6 +25,7 @@ import { ProductPriceControler } from './controllers/api/productPrice.controller
 import { UserControler } from './controllers/api/user.controller';
 import { AuthController } from './controllers/api/auth.controller';
 import { AuthMiddleware } from './middlewares/auth.Middleware';
+import { UserToken } from './entities/user-token.entity';
 
 
 @Module({
@@ -43,7 +44,8 @@ import { AuthMiddleware } from './middlewares/auth.Middleware';
         Category,
         Product,
         ProductPrice,
-        Image
+        Image,
+        UserToken
       ]
     }),
     TypeOrmModule.forFeature([
@@ -53,7 +55,8 @@ import { AuthMiddleware } from './middlewares/auth.Middleware';
         Category,
         Product,
         ProductPrice,
-        Image
+        Image,
+        UserToken
     ])
   ],
   controllers: [
