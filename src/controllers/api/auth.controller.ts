@@ -67,7 +67,7 @@ export class AuthController{
     }
 
 
-    @Post('user/login') //http://localhost:3000/auth/login
+    @Post('user/login') //http://localhost:3000/auth/user/login
     async doUserLogin(@Body() data: LoginUserDto, @Req() req: Request): Promise<ApiResponse | LoginInfoDto>{
         const user = await this.userService.getByUsername(data.username);
 

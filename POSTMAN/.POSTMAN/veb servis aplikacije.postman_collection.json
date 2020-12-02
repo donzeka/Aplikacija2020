@@ -1056,6 +1056,15 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":    \"test3453123@gmail.com\",\r\n    \"username\": \"belihleb123\",\r\n    \"password\": \"belihleb11\",\r\n    \"name\":     \"Djurica\",\r\n    \"surname\":  \"Jurica\",\r\n    \"number\":   \"+381631231221\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:3000/auth/user/register/",
 							"protocol": "http",
@@ -1067,6 +1076,37 @@
 								"auth",
 								"user",
 								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh user token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjozLCJ1c2VybmFtZSI6Im1pa2ExOTEiLCJleHAiOjE2MDk0NDkyMDIuMTQ4LCJpcCI6Ijo6MSIsInVhIjoiUG9zdG1hblJ1bnRpbWUvNy4yNi44IiwiaWF0IjoxNjA2NzcwODAyfQ.Ir8Gj1yGJqp0a3TbUTu24x5eootwJllPcj3RdpVmXq0\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/user/refresh/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"user",
+								"refresh",
 								""
 							]
 						}

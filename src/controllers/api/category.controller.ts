@@ -53,13 +53,13 @@ import { CategoryService } from "src/services/category/category.service";
         getManyBase: {
             decorators: [
                 UseGuards(RoleCheckerGuard),
-                AllowToRoles('administrator'),
+                AllowToRoles('administrator', 'user'),
             ],
         },
         getOneBase: {
             decorators: [
                 UseGuards(RoleCheckerGuard),
-                AllowToRoles('administrator'),
+                AllowToRoles('administrator', 'user'),
             ],
         },
     }
